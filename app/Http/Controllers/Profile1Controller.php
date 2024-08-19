@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Auth\Access\Gate;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller
+class Profile1Controller extends Controller
 {
 
     /**
@@ -17,16 +16,21 @@ class ProfileController extends Controller
     public function show($id)
     {
      
-        $user = User::with('posts')->find($id);
+       
+        $user = Auth::user();
+       
+    
+        $posts = Post::where('user_id', $user->id)->first();
+        
 
-        if (!$user) {
-            return redirect('/posts');
+        if (!$posts) {
+            return redirect('/dashboard');
         }
 
-        $posts = $user->posts;
+       
         $postCount = $posts->count();
 
-        return view('profile.show', compact('posts', 'user', 'postCount'));
+        return view('profile.post.show', compact('posts','user', 'postCount'));
     }
 
     /**
@@ -44,8 +48,6 @@ class ProfileController extends Controller
     public function update(Request $request, Post $post)
     {
 
-        Gate::authorize('update', $post);
-
         $post->update($request->all());
 
         return redirect()->route('profile.show', $post->user_id)->with('success', 'Post updated successfully.');
@@ -56,7 +58,6 @@ class ProfileController extends Controller
      */
     public function destroy(Post $post)
     {
-        Gate::authorize('delete', $post);
 
         $post->delete();
 

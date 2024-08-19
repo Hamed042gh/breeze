@@ -43,46 +43,4 @@ class PostController extends Controller
     }
 
 
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show(Post $post)
-    // {
-    //     return view('post.show', compact('post'));
-    // }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit(Post $post)
-    // {
-
-    //     return view('post.edit', compact('post'));
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, Post $post)
-    // {
-
-    //     $policy = Gate::authorize('update', $post);
-
-
-    //     $post->update($request->all());
-
-    //     return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(Post $post)
-    // {
-    //     Gate::authorize('delete', $post);
-
-    //     $post->delete();
-
-    //     return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
-    // }
 }

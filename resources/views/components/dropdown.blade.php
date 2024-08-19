@@ -36,10 +36,6 @@ $width = match ($width) {
                 </x-dropdown-link>
             @endunless
 
-            <!-- Other links -->
-            <x-dropdown-link>
-                {{ __('My Posts') }}
-            </x-dropdown-link>
 
             <!-- Authentication -->
             <form method="POST" action="{{ route('logout') }}">

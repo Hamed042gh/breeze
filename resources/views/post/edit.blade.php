@@ -22,7 +22,7 @@
 <body>
     <div class="container mt-5">
         <h2>Edit Post</h2>
-        <form action="{{ route('posts.update', $post->id) }}" method="POST">
+        <form action="" method="POST">
             @csrf
             @method('PUT')
             <input type="hidden" name="post_id" value="{{ $post->id }}">

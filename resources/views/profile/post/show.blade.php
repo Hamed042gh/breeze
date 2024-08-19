@@ -80,16 +80,7 @@
 <body>
     <div class="container">
         <div class="header-actions">
-            <!-- دکمه تغییر رمز عبور (فقط برای پروفایل خود کاربر) -->
-            @if (Auth::check() && Auth::user()->id == $user->id)
-                <a href="{{route('changePasswordForm')}}" class="btn btn-warning">
-                    <i class="fa fa-key"></i> Change Password
-                </a>
-                <!-- دکمه ایجاد پست جدید -->
-                <a href="{{ route('posts.create') }}" class="btn btn-info create-post-btn">
-                    <i class="fa fa-plus"></i> Create New Post
-                </a>
-            @endif
+        
 
             @if (Auth::check())
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">

@@ -129,7 +129,7 @@
         <h1 class="title">List of All Posts</h1>
         <div class="header-actions">
             @if (Auth::check())
-                <a href="/profile" class="btn-profile">
+                <a href="/dashboard" class="btn-profile">
                     My Profile
                 </a>
                 <a href="{{ route('posts.create') }}" class="btn-profile">
