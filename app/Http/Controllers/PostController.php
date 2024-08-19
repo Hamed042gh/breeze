@@ -25,7 +25,7 @@ class PostController extends Controller
 
     public function create()
     {
-
+        Gate::authorize('create', Post::class);
         return view('post.create');
     }
 
@@ -41,6 +41,4 @@ class PostController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Post created successfully.');
     }
-
-
 }

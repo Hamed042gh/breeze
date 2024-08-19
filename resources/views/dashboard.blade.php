@@ -37,7 +37,7 @@
                         {{ __('View All Posts') }}
                     </a>
 
-                    <a href="{{ route('profile.post.show', ['id' => Auth::id()]) }}"
+                    <a href="{{ route('profile.posts.show', ['id' => Auth::id()]) }}"
                         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2">
                         {{ __('My Posts') }}
                     </a>

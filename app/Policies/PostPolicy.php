@@ -69,9 +69,6 @@ class PostPolicy
      */
     private function authorizeForAction(User $user, Post $post)
     {
-        if ($user->role === 'admin') {
-            return Response::allow();
-        }
 
         return $user->id === $post->user_id
             ? Response::allow()

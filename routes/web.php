@@ -8,17 +8,21 @@ use App\Http\Controllers\UserProfileController;
 Route::get('/', function () {
     return redirect()->route('posts.index');
 });
-Route::get('posts', [PostController::class, 'index'])->name('posts.index');
-
-Route::middleware('auth')->group(function () {
-    Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::post('posts', [PostController::class, 'store'])->name('posts.store');
-});
 
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+
+Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::post('posts', [PostController::class, 'store'])->name('posts.store');
+
+
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [AccountSettingsController::class, 'edit'])->name('profile.edit');
@@ -31,13 +35,9 @@ require __DIR__ . '/auth.php';
 
 
 
-// Route::get('profile/post', [Profile1Controller::class, 'edit'])->name('profile.post.edit');
-Route::get('profile/post/{id}', [UserProfileController::class, 'showUserPosts'])->name('profile.post.show');
-
-// Route::resource('profile', ProfileController::class)
-//     ->middleware('auth')
-//     ->except(['index', 'show']);
-
-
-// Route::resource('profile', ProfileController::class)
-//     ->only(['index', 'show']);
+Route::middleware('auth')->group(function () {
+    Route::get('profile/posts/{id}', [UserProfileController::class, 'showUserPosts'])->name('profile.posts.show');
+    Route::get('profile/posts/{post}/edit', [UserProfileController::class, 'editUserPosts'])->name('profile.posts.edit');
+    Route::put('profile/posts/{post}/edit', [UserProfileController::class, 'updateUserPosts'])->name('profile.posts.update');
+    Route::delete('profile/posts/{post}/delete', [UserProfileController::class, 'deleteUserPosts'])->name('profile.posts.delete');
+});

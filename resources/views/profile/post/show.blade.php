@@ -81,6 +81,16 @@
     </head>
 
     <body>
+        @if (session('error'))
+            <div class="bg-red-500 text-white p-4 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="container">
             <div class="header-actions">
                 @if (Auth::check())
@@ -108,8 +118,10 @@
                         <hr>
                         @if (Auth::check() && Auth::user()->id == $user->id)
                             <div class="post-actions">
-                                <a href="" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="" method="POST" style="display: inline;">
+                                <a href="{{ route('profile.posts.edit', $post->id) }}"
+                                    class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('profile.posts.delete', $post->id) }}" method="POST"
+                                    style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
