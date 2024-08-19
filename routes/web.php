@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\AccountSettingsController;
+use App\Http\Controllers\Auth\SocialAuthController;
 
 Route::get('/', function () {
     return redirect()->route('posts.index');
@@ -31,7 +32,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
+Route::get('auth/{provider}/redirect', [SocialAuthController::class, 'redirectToProvider'])->name('social.redirect');
+Route::get('auth/{provider}/login', [SocialAuthController::class, 'handleProviderCallback'])->name('social.callback');
 
 
 

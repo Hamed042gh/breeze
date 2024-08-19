@@ -57,5 +57,17 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+
+        <!-- Social Login -->
+        <div class="flex items-center justify-center mt-6">
+            <a href="{{ route('social.redirect', ['provider' => 'google'])}}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded me-2">
+                {{ __('Login with Google') }}
+            </a>
+
+            <a href="{{ route('social.redirect', ['provider' => 'github']) }}"
+                class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
+                {{ __('Login with GitHub') }}
+            </a>
+        </div>
     </form>
 </x-guest-layout>
