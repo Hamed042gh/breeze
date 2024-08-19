@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Profile1Controller;
+use App\Http\Controllers\AccountSettingsController;
+use App\Http\Controllers\UserProfileController;
 
 Route::get('/', function () {
     return redirect()->route('posts.index');
@@ -21,9 +21,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [AccountSettingsController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [AccountSettingsController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [AccountSettingsController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
@@ -32,7 +32,7 @@ require __DIR__ . '/auth.php';
 
 
 // Route::get('profile/post', [Profile1Controller::class, 'edit'])->name('profile.post.edit');
-Route::get('profile/post/{id}', [Profile1Controller::class, 'show'])->name('profile.post.show');
+Route::get('profile/post/{id}', [UserProfileController::class, 'showUserPosts'])->name('profile.post.show');
 
 // Route::resource('profile', ProfileController::class)
 //     ->middleware('auth')

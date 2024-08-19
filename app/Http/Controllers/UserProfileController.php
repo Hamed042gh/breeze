@@ -7,28 +7,27 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class Profile1Controller extends Controller
+class UserProfileController extends Controller
 {
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function showUserPosts($id)
     {
-     
-       
-        $user = Auth::user();
-       
-    
-        $posts = Post::where('user_id', $user->id)->first();
         
+        $user = User::find($id);
 
-        if (!$posts) {
-            return redirect('/dashboard');
+        if (!$user) {
+            return redirect('/posts')->with('error', 'User not authenticated.');
         }
 
+        if ($user->posts->isEmpty()) {
+            return redirect()->back()->with('error', 'No posts found for this user.');
+        }
+        $posts = $user->posts;
        
-        $postCount = $posts->count();
+        $postCount = $user->posts->count();
 
         return view('profile.post.show', compact('posts','user', 'postCount'));
     }
