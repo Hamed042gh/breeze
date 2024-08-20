@@ -57,6 +57,6 @@ class UserProfileController extends Controller
         Gate::authorize('delete', $post);
         $post->delete();
 
-        return redirect()->back()->with('success', 'Post deleted successfully.');
+        return redirect()->route('dashboard')->with('success', 'Post deleted successfully.');
     }
 }
