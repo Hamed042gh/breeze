@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        @livewireStyles
         <style>
             body {
                 font-family: 'Figtree', sans-serif;
@@ -91,6 +92,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
+                position: relative;
                 transition: box-shadow 0.3s ease, transform 0.3s ease;
             }
 
@@ -121,18 +123,44 @@
                 font-size: 18px;
                 color: #777;
             }
+
+            /* Like button styling */
+            .like-button {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                background-color: #ff4d4d;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 18px;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.3s;
+            }
+
+            .like-button:hover {
+                background-color: #ff6666;
+                transform: scale(1.1);
+            }
+
+            .like-button:active {
+                background-color: #e60000;
+            }
         </style>
     </head>
 
     <body>
-        @if (session('error'))
-            <div class="bg-red-500 text-white p-4 rounded mb-4">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if (session('success'))
-            <div class="bg-green-500 text-white p-4 rounded mb-4">
-                {{ session('success') }}
+        @if (session('message'))
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ session('message') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
         <div class="header">
@@ -169,6 +197,10 @@
                         <h2>{{ $post->title }}</h2>
                         <p>{{ $post->body }}</p>
                         <hr>
+                        <!-- Like button component -->
+                        <div class="like-button-container">
+                            @livewire('like-button', ['post' => $post])
+                        </div>
                     </div>
                 @endforeach
             @else
@@ -177,6 +209,8 @@
                 </div>
             @endif
         </div>
+        @livewireScripts
+
     </body>
 
 </html>
