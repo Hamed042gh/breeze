@@ -2,6 +2,7 @@
 <html lang="en">
 
     <head>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>List of All Posts</title>
@@ -200,6 +201,7 @@
                         <!-- Like button component -->
                         <div class="like-button-container">
                             @livewire('like-button', ['post' => $post])
+                            <livewire:comments :model="$post" />
                         </div>
                     </div>
                 @endforeach
