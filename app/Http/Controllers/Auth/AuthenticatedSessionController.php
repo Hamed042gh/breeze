@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redis;
+use App\Traits\ManagesUserOnlineStatus;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
+    use ManagesUserOnlineStatus;
     public function create(): View
     {
         return view('auth.login');
@@ -28,8 +29,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false))
-                     ->with('success', 'Welcome back!');
+        $userId = Auth::id();
+
+        $this->setUserOnlineStatus($userId);
+
+        return redirect()->intended(route('posts.index', absolute: false))
+            ->with('success', 'Welcome back!');
     }
 
     /**
@@ -37,6 +42,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $userId = Auth::id();
+
+        // حذف وضعیت آنلاین از سشن
+        $this->removeUserOnlineStatus($userId);
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

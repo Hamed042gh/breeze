@@ -147,7 +147,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX','laravel_database_'),
+            'prefix' => env('REDIS_PREFIX',''),
         ],
 
         'default' => [

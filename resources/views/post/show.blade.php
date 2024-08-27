@@ -164,26 +164,47 @@
                 </button>
             </div>
         @endif
+
         <div class="header">
-            <h1 class="title">List of All Posts</h1>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                List of All Posts
+            </h1>
             <div class="header-actions">
+
                 @if (Auth::check())
-                    <a href="/dashboard" class="btn-profile">
+
+                    <a href="/dashboard"
+                        class="bg-yellow-500 text-gray-800 py-3 px-6 rounded-lg shadow-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">
                         My Profile
                     </a>
-                    <a href="{{ route('posts.create') }}" class="btn-profile">
+                    <a href="{{ route('posts.create') }}"
+                        class="bg-gray-500 text-white py-2 px-4 rounded shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
                         Create New Post
                     </a>
-                    <a href="{{ route('logout') }}" class="btn-profile"
+                    @livewire('online-users')
+
+                    <a href="{{ route('logout') }}"
+                        class="btn-profile flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
+                        <!-- آیکون خروج (با استفاده از Heroicons) -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m7 4v-4m0 0V7m0 4H7" />
+                        </svg>
+                        <span>Logout</span>
                     </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 @else
                     <a href="{{ route('login') }}">Log in</a>
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}">Register</a>
                     @endif
                 @endif
+
             </div>
         </div>
 
@@ -207,7 +228,10 @@
                 @endforeach
             @else
                 <div class="no-posts">
-                    <h3>No post exists...</h3>
+                    <h3 class="text-xl font-semibold text-gray-600 dark:text-gray-300 text-center mt-4">
+                        No post exists...
+                    </h3>
+
                 </div>
             @endif
         </div>
