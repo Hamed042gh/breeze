@@ -6,6 +6,8 @@ use App\Models\Post;
 use App\Events\PostCreated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\StorePostRequest;
 
 
@@ -15,9 +17,9 @@ class PostController extends Controller
     public function index()
     {
 
-        $posts = Post::all();
-
-
+        $posts = Cache::remember('home_page_posts', 3600, function () {
+            return Post::all();
+        });
         return view('post.show', compact('posts'));
     }
 

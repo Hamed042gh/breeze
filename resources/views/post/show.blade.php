@@ -186,7 +186,6 @@
                     <a href="{{ route('logout') }}"
                         class="btn-profile flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <!-- آیکون خروج (با استفاده از Heroicons) -->
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -215,9 +214,12 @@
         <div class="posts">
             @if ($posts->isNotEmpty())
                 @foreach ($posts as $post)
-                    <div class="post-item">
-                        <h2>{{ $post->title }}</h2>
-                        <p>{{ $post->body }}</p>
+                    <div class="mb-4 p-4 border border-gray-200 rounded-lg">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ $post->title }}</h2>
+                        <p class="text-base text-gray-700 mb-2">{{ $post->body }}</p>
+                        <p class="text-sm text-gray-500 text-right">{{ $post->created_at->diffForHumans() }}</p>
+
+
                         <hr>
                         <!-- Like button component -->
                         <div class="like-button-container">

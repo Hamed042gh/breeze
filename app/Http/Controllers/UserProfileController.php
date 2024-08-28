@@ -12,22 +12,41 @@ class UserProfileController extends Controller
 
     public function showUserPosts($id)
     {
-
-        $user = User::find($id);
+        $user = $this->findUserById($id);
 
         if (!$user) {
-            return redirect('/posts')->with('error', 'User not authenticated.');
+            return $this->redirectWithError('/posts', 'User not authenticated.');
         }
 
-        if ($user->posts->isEmpty()) {
-            return redirect()->back()->with('error', 'No posts found for this user.');
-        }
         $posts = $user->posts;
 
-        $postCount = $user->posts->count();
+        if ($posts->isEmpty()) {
+            return $this->redirectWithErrorBack('No posts found for this user.');
+        }
+
+        $postCount = $posts->count();
 
         return view('profile.post.show', compact('posts', 'user', 'postCount'));
     }
+
+
+    private function findUserById($id)
+    {
+        return User::find($id);
+    }
+
+
+    private function redirectWithError($route, $message)
+    {
+        return redirect($route)->with('error', $message);
+    }
+
+
+    private function redirectWithErrorBack($message)
+    {
+        return redirect()->back()->with('error', $message);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
