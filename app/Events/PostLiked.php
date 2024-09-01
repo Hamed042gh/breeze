@@ -3,7 +3,7 @@
 namespace App\Events;
 
 
-use Illuminate\Broadcasting\Channel;
+use App\Models\Post;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -14,27 +14,19 @@ class PostLiked  implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $post;
-    public $user;
-    public function __construct($post, $user)
+
+    public function __construct(Post $post)
     {
         $this->post = $post;
-        $this->user = $user;
     }
-
-
+    
     public function broadcastOn()
     {
-
-        return new Channel('post.' . $this->post->id);
+        return ['post'];
     }
-
-    public function broadcastWith()
+  
+    public function broadcastAs()
     {
-        return
-            [
-                'post' => $this->post->toArray(),
-                'user' => $this->user->toArray(),
-
-            ];
+        return 'PostLiked';
     }
 }

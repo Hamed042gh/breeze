@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\PostLiked;
 use App\Models\Like;
 use App\Models\Post;
 use Livewire\Component;
@@ -27,6 +28,7 @@ class LikeButton extends Component
         }
 
         $userId = Auth::id();
+        $post = $this->post;
         $postKey = env('REDIS_POST_PREFIX', 'post_') . $this->post->id . ':' . env('REDIS_LIKE_PREFIX', 'likes');
 
         if (Redis::sismember($postKey, $userId)) {
@@ -39,6 +41,8 @@ class LikeButton extends Component
             // Add like
             Redis::sadd($postKey, $userId);
             Like::create(['post_id' => $this->post->id, 'user_id' => $userId]);
+          broadcast(new PostLiked($post, $post->user_id));
+      
         }
 
         $this->updateLikeStatus();
@@ -47,7 +51,7 @@ class LikeButton extends Component
 
     private function updateLikeStatus()
     {
-        $postKey =env('REDIS_POST_PREFIX', 'post_') . $this->post->id . ':' . env('REDIS_LIKE_PREFIX', 'likes');
+        $postKey = env('REDIS_POST_PREFIX', 'post_') . $this->post->id . ':' . env('REDIS_LIKE_PREFIX', 'likes');
         $this->likesCount = Redis::scard($postKey);
         $this->isLiked = Auth::check() ? Redis::sismember($postKey, Auth::id()) : false;
     }
