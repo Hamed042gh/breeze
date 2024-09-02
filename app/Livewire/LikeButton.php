@@ -28,7 +28,11 @@ class LikeButton extends Component
         }
 
         $userId = Auth::id();
+
+        $user = Auth::user();
+
         $post = $this->post;
+
         $postKey = env('REDIS_POST_PREFIX', 'post_') . $this->post->id . ':' . env('REDIS_LIKE_PREFIX', 'likes');
 
         if (Redis::sismember($postKey, $userId)) {
@@ -41,8 +45,7 @@ class LikeButton extends Component
             // Add like
             Redis::sadd($postKey, $userId);
             Like::create(['post_id' => $this->post->id, 'user_id' => $userId]);
-          broadcast(new PostLiked($post, $post->user_id));
-      
+            broadcast(new PostLiked($post, $user));
         }
 
         $this->updateLikeStatus();

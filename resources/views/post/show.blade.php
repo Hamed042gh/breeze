@@ -4,6 +4,10 @@
     <head>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <meta charset="UTF-8">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        @foreach ($posts as $post)
+            <meta class="post-item" data-post-id="{{ $post->id }}">
+        @endforeach
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>List of All Posts</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -218,7 +222,6 @@
                         <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ $post->title }}</h2>
                         <p class="text-base text-gray-700 mb-2">{{ $post->body }}</p>
                         <p class="text-sm text-gray-500 text-right">{{ $post->created_at->diffForHumans() }}</p>
-
 
                         <hr>
                         <!-- Like button component -->

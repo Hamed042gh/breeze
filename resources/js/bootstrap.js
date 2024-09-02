@@ -1,24 +1,26 @@
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+import Swal from "sweetalert2";
 
-// در اینجا پیکربندی Pusher
 window.Pusher = Pusher;
 
-// پیکربندی Laravel Echo
 window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: 'b903aeb6cd187fecac9b',
-    cluster:'sa1',
-    forceTLS: true
+    authEndpoint: "/broadcasting/auth",
+    broadcaster: "pusher",
+    key: "b903aeb6cd187fecac9b",
+    cluster: "sa1",
+    forceTLS: true,
 });
 
+document.querySelectorAll(".post-item").forEach((post) => {
+    const postId = post.getAttribute("data-post-id");
 
-window.Echo.channel('post')
-    .listen('.PostLiked', (event) => {
-        // بررسی وجود خاصیت `post` و `title`
-        if (event.post && event.post.title) {
-            alert('Post liked: ' + event.post.title);
-        } else {
-            console.error('Post title is not available in the event data.');
-        }
+    window.Echo.private("post." + postId).listen(".PostLiked", (event) => {
+        Swal.fire({
+            title: "Post Liked!",
+            text: event.user.name + ' liked your post "' +'.\n'+ event.post.title + '".\n',
+            icon: "success",
+            confirmButtonText: "OK",
+        });
     });
+});
