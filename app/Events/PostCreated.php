@@ -19,7 +19,7 @@ class PostCreated
     public $post;
     public function __construct(Post $post)
     {
-       $this->post = $post;
+        $this->post = $post;
     }
 
     /**

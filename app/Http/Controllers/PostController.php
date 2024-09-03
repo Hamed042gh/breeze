@@ -7,7 +7,6 @@ use App\Events\PostCreated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\StorePostRequest;
 
 

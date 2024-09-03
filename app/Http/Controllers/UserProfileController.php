@@ -48,18 +48,14 @@ class UserProfileController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function editUserPosts(Post $post)
     {
         Gate::authorize('update', $post);
         return view('profile.post.edit', compact('post'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function updateUserPosts(Request $request, Post $post)
     {
         Gate::authorize('update', $post);
@@ -68,9 +64,7 @@ class UserProfileController extends Controller
         return redirect()->route('dashboard')->with('success', 'Post updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function deleteUserPosts(Post $post)
     {
         Gate::authorize('delete', $post);

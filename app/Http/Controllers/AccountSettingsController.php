@@ -16,9 +16,10 @@ class AccountSettingsController extends Controller
      */
     public function edit(Request $request): View
     {
+
         return view('profile.edit', [
             'user' => $request->user(),
-        ]);
+        ])->with('status', 'profile-updated');
     }
 
     /**

@@ -13,4 +13,3 @@ Broadcast::channel('post.{postId}', function ($user, $postId) {
 
     return Auth::check() && $user->id === $post->user_id;
 });
-
