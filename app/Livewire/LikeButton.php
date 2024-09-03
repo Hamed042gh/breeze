@@ -18,45 +18,71 @@ class LikeButton extends Component
     public function mount(Post $post)
     {
         $this->post = $post;
+        $this->validatePost();
         $this->updateLikeStatus();
     }
 
     public function like()
     {
-        if (!Auth::check()) {
+        if (!$this->isUserAuthenticated()) {
             return redirect()->route('login');
         }
 
         $userId = Auth::id();
+        $postKey = $this->getRedisPostKey();
 
-        $user = Auth::user();
-
-        $post = $this->post;
-
-        $postKey = env('REDIS_POST_PREFIX', 'post_') . $this->post->id . ':' . env('REDIS_LIKE_PREFIX', 'likes');
-
-        if (Redis::sismember($postKey, $userId)) {
-
-            Redis::srem($postKey, $userId);
-            Like::where('post_id', $this->post->id)
-                ->where('user_id', $userId)
-                ->delete();
+        if ($this->isPostLikedByUser($postKey, $userId)) {
+            $this->removeLike($postKey, $userId);
         } else {
-            // Add like
-            Redis::sadd($postKey, $userId);
-            Like::create(['post_id' => $this->post->id, 'user_id' => $userId]);
-            broadcast(new PostLiked($post, $user));
+            $this->addLike($postKey, $userId);
+            broadcast(new PostLiked($this->post, Auth::user()));
         }
 
         $this->updateLikeStatus();
         $this->dispatch('likeUpdated');
     }
 
+    private function validatePost()
+    {
+        if (!$this->post) {
+            throw new \Exception('Invalid post.');
+        }
+    }
+
+    private function isUserAuthenticated()
+    {
+        return Auth::check();
+    }
+
+    private function getRedisPostKey()
+    {
+        return env('REDIS_POST_PREFIX', 'post_') . $this->post->id . ':' . env('REDIS_LIKE_PREFIX', 'likes');
+    }
+
+    private function isPostLikedByUser($postKey, $userId)
+    {
+        return Redis::sismember($postKey, $userId);
+    }
+
+    private function addLike($postKey, $userId)
+    {
+        Redis::sadd($postKey, $userId);
+        Like::create(['post_id' => $this->post->id, 'user_id' => $userId]);
+    }
+
+    private function removeLike($postKey, $userId)
+    {
+        Redis::srem($postKey, $userId);
+        Like::where('post_id', $this->post->id)
+            ->where('user_id', $userId)
+            ->delete();
+    }
+
     private function updateLikeStatus()
     {
-        $postKey = env('REDIS_POST_PREFIX', 'post_') . $this->post->id . ':' . env('REDIS_LIKE_PREFIX', 'likes');
+        $postKey = $this->getRedisPostKey();
         $this->likesCount = Redis::scard($postKey);
-        $this->isLiked = Auth::check() ? Redis::sismember($postKey, Auth::id()) : false;
+        $this->isLiked = $this->isUserAuthenticated() ? $this->isPostLikedByUser($postKey, Auth::id()) : false;
     }
 
     public function render()

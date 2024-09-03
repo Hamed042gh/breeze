@@ -18,7 +18,12 @@ document.querySelectorAll(".post-item").forEach((post) => {
     window.Echo.private("post." + postId).listen(".PostLiked", (event) => {
         Swal.fire({
             title: "Post Liked!",
-            text: event.user.name + ' liked your post "' +'.\n'+ event.post.title + '".\n',
+            text:
+                event.user.name +
+                ' liked your post "' +
+                ".\n" +
+                event.post.title +
+                '".\n',
             icon: "success",
             confirmButtonText: "OK",
         });

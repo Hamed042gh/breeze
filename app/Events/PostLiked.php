@@ -2,15 +2,14 @@
 
 namespace App\Events;
 
-
-
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class PostLiked  implements  ShouldBroadcast
+
+class PostLiked  implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,7 +18,7 @@ class PostLiked  implements  ShouldBroadcast
 
     public function __construct($post, $user)
     {
-       
+
         $this->post = $post;
         $this->user = $user;
     }

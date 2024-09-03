@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\Auth\SocialAuthController;
+
+Broadcast::routes();
 
 Route::get('/', function () {
     return redirect()->route('posts.index');
