@@ -28,4 +28,20 @@ document.querySelectorAll(".post-item").forEach((post) => {
             confirmButtonText: "OK",
         });
     });
+
+    window.Echo.private("post." + postId).listen(".PostCommented", (event) => {
+        Swal.fire({
+            title: "New Comment!",
+            text:
+                event.user.name +
+                ' commented on your post "' +
+                event.post.title +
+                '".\n' +
+                'Comment: "' +
+                event.comment.body +
+                '"',
+            icon: "info",
+            confirmButtonText: "OK",
+        });
+    });
 });

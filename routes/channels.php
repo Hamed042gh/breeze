@@ -5,5 +5,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('post.{postId}', function ($user, $postId) {
-    return Auth::check() && $user->id === Post::find($postId)->user_id;
+    $post = Post::find($postId);
+
+    if (!$post) {
+        return false;
+    }
+
+    return Auth::check() && $user->id === $post->user_id;
 });
+
